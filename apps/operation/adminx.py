@@ -31,7 +31,7 @@ class UserMessageAdmin(object):
 
 
 class UserCourseAdmin(object):
-    list_display = ['usere', 'course', 'add_time']
+    list_display = ['user', 'course', 'add_time']
     search_fields = ['user', 'course']
     list_filter = ['user__nick_name', 'course', 'add_time']
 
