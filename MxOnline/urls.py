@@ -15,18 +15,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.conf.urls import url
+from django.conf.urls import url, include
 
 # 专门处理静态文件
 from django.views.generic import TemplateView
 import xadmin
 
-from users.views import LoginView
+from users.views import LoginView, RegisterView, ActiveUserView
 
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
 
     url('^$', TemplateView.as_view(template_name='index.html'), name='index'),
     url('^login/$', LoginView.as_view(), name='login'),
+    url('^register/$', RegisterView.as_view(), name='register'),
+
+    # 图片认证验证码
+    url(r'^captcha/', include('captcha.urls')),
+
+    url(r'^active/(?P<active_code>.*)/$', ActiveUserView.as_view(), name='user_active'),
 
 ]
