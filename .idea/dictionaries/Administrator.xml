@@ -2,6 +2,8 @@
   <dictionary name="Administrator">
     <words>
       <w>bootswatch</w>
+      <w>collectionbtn</w>
+      <w>notlogin</w>
     </words>
   </dictionary>
 </component>

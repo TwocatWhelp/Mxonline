@@ -20,9 +20,10 @@ class CourseOryAdmin(object):
 
 
 class TeacherAdmin(object):
-    list_display = ['name', 'org', 'work_years', 'work_company', 'work_position', 'points', 'click_nums', 'fac_nums', 'add_time']
-    search_fields = ['name', 'org', 'work_years', 'work_company', 'work_position', 'points', 'click_nums', 'fac_nums',]
-    list_filter = ['name', 'org', 'work_years', 'work_company', 'work_position', 'points', 'click_nums', 'fac_nums', 'add_time']
+    list_display = ['name', 'org', 'work_years', 'work_company', 'work_position', 'points', 'click_nums', 'fav_nums', 'add_time']
+    search_fields = ['name', 'org', 'work_years', 'work_company', 'work_position', 'points', 'click_nums', 'fav_nums']
+    list_filter = ['name', 'org', 'work_years', 'work_company', 'work_position', 'points', 'click_nums', 'fav_nums', 'add_time']
+
 
 xadmin.site.register(CityDict, CityDictAdmin)
 xadmin.site.register(CourseOrg, CourseOryAdmin)
