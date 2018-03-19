@@ -80,7 +80,7 @@ class OrgHomeView(View):
         current_page = 'home'
         course_org = CourseOrg.objects.get(id=int(org_id))
         has_fav = False
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
                 has_fav = True
 
@@ -103,7 +103,7 @@ class OrgCourseView(View):
         current_page = 'course'
         course_org = CourseOrg.objects.get(id=int(org_id))
         has_fav = False
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
                 has_fav = True
         all_courses = course_org.course_set.all()
@@ -123,7 +123,7 @@ class OrgDescView(View):
         current_page = 'desc'
         course_org = CourseOrg.objects.get(id=int(org_id))
         has_fav = False
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
                 has_fav = True
         return render(request, 'org-detail-desc.html', {
@@ -142,7 +142,7 @@ class OrgTeacherView(View):
         course_org = CourseOrg.objects.get(id=int(org_id))
         all_teachers = course_org.teacher_set.all()
         has_fav = False
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
                 has_fav = True
         return render(request, 'org-detail-teachers.html', {
@@ -162,27 +162,30 @@ class AddFavView(View):
         fav_type = request.POST.get('fav_type', 0)
 
         # if not request.user.is_authenticated():
-        if not request.user.is_authenticated():
+        # 这个问题困扰我两天，只要单步运行到166行，就报服务器500错误，经过多次努力，只需要把括号去掉就能正常运行了
+        # 同时在org_base.html页面175行加入  window.location.reload();  就能正常刷新页面了
+
+        if not request.user.is_authenticated:
             # 判断用户登录状态
             return HttpResponse("{'status' : 'fail', 'msg' : '用户未登录'}", content_type='application/json')
-
-        exist_records = UserFavorite.objects.filter(user=request.user, fav_id=int(fav_id), fav_type=int(fav_type))
-        if exist_records:
-            # 如果记录已经收藏，则表示用户取消收藏
-            exist_records.delete()
-            return HttpResponse("{'status' : 'success', 'msg' : '收藏'}", content_type='application/json')
-
         else:
-            user_fav = UserFavorite()
-            if int(fav_id) > 0 and int(fav_type) > 0:
-                user_fav.user = request.user
-                user_fav.fav_id = int(fav_id)
-                user_fav.fav_type = int(fav_type)
-                user_fav.save()
-                return HttpResponse("{'status' : 'success', 'msg' : '已收藏'}", content_type='application/json')
+            exist_records = UserFavorite.objects.filter(user=request.user, fav_id=int(fav_id), fav_type=int(fav_type))
+            if exist_records:
+                # 如果记录已经收藏，则表示用户取消收藏
+                exist_records.delete()
+                return HttpResponse("{'status' : 'fail', 'msg' : '收藏'}", content_type='application/json')
 
             else:
-                return HttpResponse("{'status' : 'fail', 'msg' : '收藏出错'}", content_type='application/json')
+                user_fav = UserFavorite()
+                if int(fav_id) > 0 and int(fav_type) > 0:
+                    user_fav.user = request.user
+                    user_fav.fav_id = int(fav_id)
+                    user_fav.fav_type = int(fav_type)
+                    user_fav.save()
+                    return HttpResponse("{'status' : 'success', 'msg' : '已收藏'}", content_type='application/json')
+
+                else:
+                    return HttpResponse("{'status' : 'fail', 'msg' : '收藏出错'}", content_type='application/json')
 
 
 

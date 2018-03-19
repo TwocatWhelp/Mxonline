@@ -2,7 +2,9 @@
   <dictionary name="Administrator">
     <words>
       <w>bootswatch</w>
+      <w>clickjacking</w>
       <w>collectionbtn</w>
+      <w>imgslide</w>
       <w>notlogin</w>
     </words>
   </dictionary>
