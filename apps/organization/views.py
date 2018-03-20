@@ -32,6 +32,7 @@ class OrgView(View):
 
         org_nums = all_orgs.count()
 
+        # 排序
         sort = request.GET.get('sort', '')
         if sort:
             if sort == 'students':
