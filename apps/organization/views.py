@@ -7,6 +7,8 @@ from organization.models import CourseOrg, CityDict
 from .forms import UserAskForm
 from operation.models import UserFavorite
 from courses.models import Course
+from .models import Teacher
+from courses.models import Course
 
 # Create your views here.
 
@@ -174,7 +176,7 @@ class AddFavView(View):
             if exist_records:
                 # 如果记录已经收藏，则表示用户取消收藏
                 exist_records.delete()
-                return HttpResponse("{'status' : 'fail', 'msg' : '收藏'}", content_type='application/json')
+                return HttpResponse("{'status' : 'success', 'msg' : '收藏'}", content_type='application/json')
 
             else:
                 user_fav = UserFavorite()
@@ -189,10 +191,64 @@ class AddFavView(View):
                     return HttpResponse("{'status' : 'fail', 'msg' : '收藏出错'}", content_type='application/json')
 
 
+class TeacherListView(View):
+    """
+    课程讲师列表页
+    """
+    def get(self, request):
+        all_teacher = Teacher.objects.all()
+
+        # 排序
+        sort = request.GET.get('sort', '')
+        if sort:
+            if sort == 'hot':
+                all_teacher = all_teacher.order_by('-click_nums')
+
+        sorted_teacher = Teacher.objects.all().order_by('-click_nums')[:3]
 
 
+        # 对讲师进行分页
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+
+        p = Paginator(all_teacher, 7, request=request)
+        teachers = p.page(page)
+
+        return render(request, 'teachers-list.html', {
+            "all_teacher": teachers,
+            'sort': sort,
+            'sorted_teacher': sorted_teacher,
+        })
 
 
+class TeacherDetailView(View):
+    """
+    讲师详情页
+    """
+    def get(self, request, teacher_id):
+        teacher = Teacher.objects.get(id=int(teacher_id))
+        all_courses = Course.objects.filter(teacher=teacher)
+        # 讲师排行
+        sorted_teacher = Teacher.objects.all().order_by('-click_nums')[:3]
+
+        has_teacher_faved = False
+        has_org_faved = False
+        if request.user.is_authenticated:
+            if UserFavorite.objects.filter(user=request.user, fav_id=teacher.id, fav_type=3):
+                has_teacher_faved = True
+
+            if UserFavorite.objects.filter(user=request.user, fav_id=teacher.org.id, fav_type=2):
+                has_org_faved = True
+
+        return render(request, 'teacher-detail.html', {
+            'teacher': teacher,
+            'all_courses': all_courses,
+            'sorted_teacher': sorted_teacher,
+            'has_teacher_faved': has_teacher_faved,
+            'has_org_faved': has_org_faved,
+        })
 
 
 
