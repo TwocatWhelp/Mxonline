@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic.base import View
@@ -16,6 +17,11 @@ class CourseListView(View):
         all_course = Course.objects.all().order_by('-add_time')
 
         hot_courses = Course.objects.all().order_by('-click_nums')[:3]
+
+        # 课程搜索
+        search_keywords = request.GET.get('keywords', '')
+        if search_keywords:
+            all_course = all_course.filter(Q(name__icontains=search_keywords) | Q(desc__icontains=search_keywords) | Q(detail__icontains=search_keywords))
 
         # 排序
         sort = request.GET.get('sort', '')
@@ -183,6 +189,9 @@ class VideoPlayView(View):
             'relate_courses': relate_courses,
             'video': video,
         })
+
+
+
 
 
 

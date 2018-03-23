@@ -21,7 +21,7 @@ urlpatterns = [
     # 机构介绍
     url(r'^desc/(?P<org_id>\d+)/$', OrgDescView.as_view(), name='org_desc'),
     # 机构介绍
-    url(r'^teacher/(?P<org_id>\d+)/$', OrgTeacherView.as_view(), name='org_teacher'),
+    url(r'^org_teacher/(?P<org_id>\d+)/$', OrgTeacherView.as_view(), name='org_teacher'),
 
     # 机构收藏
     url(r'^add_fav/$', AddFavView.as_view(), name='add_fav'),
