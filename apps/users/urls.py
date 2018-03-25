@@ -4,7 +4,8 @@ __date__ = '2018/3/23 12:23'
 
 from django.conf.urls import url
 
-from .views import UserInfoView, UploadImageView, UpdatePwdView, SendEmailCodeView
+from .views import UserInfoView, UploadImageView, UpdatePwdView, SendEmailCodeView, UpdateEmailView, MyCourseView
+from .views import MyFavOrgView, MyFavTeacherView, MyFavCourseView, MyMessageView
 
 
 app_name = 'users'
@@ -20,5 +21,23 @@ urlpatterns = [
 
     # 用户个人中心发送邮箱验证码
     url(r'^sendemail_code/$', SendEmailCodeView.as_view(), name='sendemail_code'),
+
+    # 修改用户个人中心发送邮箱
+    url(r'^update_email/$', UpdateEmailView.as_view(), name='update_email'),
+
+    # 用户个人中心我的课程
+    url(r'^mycourse/$', MyCourseView.as_view(), name='mycourse'),
+
+    # 用户个人中心我的收藏授课讲师
+    url(r'^myfav/org/$', MyFavOrgView.as_view(), name='myfav_org'),
+
+    # 用户个人中心我的收藏课程机构
+    url(r'^myfav/teacher/$', MyFavTeacherView.as_view(), name='myfav_teacher'),
+
+    # 用户个人中心我的收藏课程
+    url(r'^myfav/course/$', MyFavCourseView.as_view(), name='myfav_course'),
+
+    # 用户个人中心我的消息
+    url(r'^mymessage/$', MyMessageView.as_view(), name='mymessage'),
 
 ]

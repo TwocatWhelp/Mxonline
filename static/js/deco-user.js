@@ -22,12 +22,12 @@ function sendCodeChangeEmail($btn){
         success: function(data){
             if(data.email){
                 Dml.fun.showValidateError($('#jsChangeEmail'), data.email);
-            }else if(data.status == 'success'){
+            }else if(data.status === 'success'){
                 Dml.fun.showErrorTips($('#jsChangeEmailTips'), "邮箱验证码已发送");
-            }else if(data.status == 'failure'){
+            }else if(data.status === 'failure'){
                  Dml.fun.showValidateError($('#jsChangeEmail'), "邮箱验证码发送失败");
-            }else if(data.status == 'success'){
             }
+
         },
         complete: function(XMLHttpRequest){
             $btn.val("获取验证码");
@@ -50,7 +50,7 @@ var verify = verifyDialogSubmit(
         cache: false,
         type: 'post',
         dataType:'json',
-        url:"/users/sendemail_code/ ",
+        url:"/users/update_email/ ",
         data:$('#jsChangeEmailForm').serialize(),
         async: true,
         beforeSend:function(XMLHttpRequest){
@@ -184,7 +184,9 @@ $(function(){
                         title: '保存成功',
                         h2: '个人信息修改成功！'
                     });
-                    setTimeout(function(){window.location.href = window.location.href;},1500);
+                    setTimeout(function(){
+                        window.location.href = window.location.href;
+                    },1500);
                 }
             },
             complete: function(XMLHttpRequest){

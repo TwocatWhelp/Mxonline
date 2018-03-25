@@ -64,7 +64,7 @@ class UserMessage(models.Model):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return self.user
+        return str(self.user)
 
 
 class UserCourse(models.Model):

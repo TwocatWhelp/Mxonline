@@ -23,14 +23,17 @@ from django.views.static import serve
 from django.views.generic import TemplateView
 import xadmin
 
-from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetView, ModifyPwdView
-from MxOnline.settings import MEDIA_ROOT
+from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetView, ModifyPwdView, LogoutView, IndexView
+from MxOnline.settings import MEDIA_ROOT, STATIC_ROOT
 
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
 
-    url('^$', TemplateView.as_view(template_name='index.html'), name='index'),
+    url('^$', IndexView.as_view(), name='index'),
+
     url('^login/$', LoginView.as_view(), name='login'),
+    url('^logout/$', LogoutView.as_view(), name='logout'),
+
     url('^register/$', RegisterView.as_view(), name='register'),
 
     # 图片认证验证码
@@ -54,8 +57,15 @@ urlpatterns = [
 
 
     # media上传文件的访问处理函数
-    url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT})
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 
-
+    # media上传文件的访问处理函数
+    url(r'^static/(?P<path>.*)$', serve, {'document_root': STATIC_ROOT})
 
 ]
+
+# 全局404页面配置
+handler404 = 'users.views.page_not_found'
+
+# 全局500页面配置
+handler500 = 'users.views.page_error'
