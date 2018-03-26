@@ -346,7 +346,7 @@ class IndexView(View):
     """
     def get(self, request):
         # 取出伦比图
-        all_banners = Banner.objects.all().order_by('index')[:5]
+        all_banners = Banner.objects.all().order_by('index')
 
         # 取出所有课程
         courses = Course.objects.filter(is_banner=False)[:6]
