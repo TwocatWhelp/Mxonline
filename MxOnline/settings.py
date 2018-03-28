@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'captcha',
     'pure_pagination',
+    'DjangoUeditor',
 ]
 
 AUTH_USER_MODEL = "users.UserProfile"
@@ -146,6 +147,7 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # 部署时开
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 

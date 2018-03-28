@@ -60,6 +60,8 @@ class EmailVerifyRecordAdmin(object):
     search_fields = ['code', 'email', 'send_type']
     list_filter = ['code', 'email', 'send_type', 'send_time']
 
+    model_icon = 'fa fa-address-book-o'
+
 
 class BannerAdmin(object):
     list_display = ['title', 'image', 'url', 'index', 'add_time']

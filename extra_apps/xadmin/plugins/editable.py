@@ -16,6 +16,8 @@ from xadmin.views.edit import ModelFormAdminUtil
 from xadmin.views.list import EMPTY_CHANGELIST_VALUE
 from xadmin.layout import FormHelper
 
+# from MxOnline.settings import MEDIA_ROOT
+
 
 class EditablePlugin(BaseAdminPlugin):
 
@@ -50,14 +52,21 @@ class EditablePlugin(BaseAdminPlugin):
         return item
 
     # Media
+    # def get_media(self, media):
+    #     if self.editable_need_fields:
+    #
+    #         try:
+    #             m = self.model_form.media
+    #         except:
+    #             m = Media()
+    #         media = media + m +\
+    #             self.vendor(
+    #                 'xadmin.plugin.editable.js', 'xadmin.widget.editable.css')
+    #     return media
+
     def get_media(self, media):
         if self.editable_need_fields:
-
-            try:
-                m = self.model_form.media
-            except:
-                m = Media()
-            media = media + m +\
+            media = self.model_form.media + media +  \
                 self.vendor(
                     'xadmin.plugin.editable.js', 'xadmin.widget.editable.css')
         return media
